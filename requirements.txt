@@ -6,3 +6,5 @@ jupyterlab
 mlflow
 xgboost
 pytest
+fastapi
+uvicorn
