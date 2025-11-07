@@ -28,10 +28,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: List repository (debug)
+      run: |
+        ls -R .
 
     - name: Run tests with pytest
+      env:
+        PYTHONPATH: src
       run: |
-        pytest test/ -v # Run all tests in the test/ directory
+        python -m pytest test/ -v
 
   # Job 2: Train the model
   train:
@@ -63,14 +68,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1 # Or your bucket's region
 
-    - name: Debug - Check for secrets
-      run: |
-        echo "Checking if secrets are available..."
-        echo "AWS_ACCESS_KEY_ID is: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-        echo "AWS_SECRET_ACCESS_KEY is: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
-        
-
+    # NOTE: removed an unsafe debug step that echoed secrets to logs.
+    # Avoid printing secrets in CI logs; secrets must be configured in repository settings.
     - name: Pull data from DVC remote storage
       run: |
         dvc pull # Pulls the latest data from the S3 bucket
