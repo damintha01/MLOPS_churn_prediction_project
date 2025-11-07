@@ -1,5 +1,4 @@
-# src/feature_engineering/process_data.py
-
+# CORRECT - Code wrapped in a main() function
 import pandas as pd
 import numpy as np
 import os
@@ -42,7 +41,7 @@ def main():
     ]
     df['num_services'] = df[service_cols].apply(lambda row: (row != 'No').sum(), axis=1)
     df['has_multiple_services'] = (df['num_services'] > 1).astype(int)
-    df.drop('num_services', axis=1, inplace=True) # Clean up temporary column
+    df.drop('num_services', axis=1, inplace=True)
     print("New features created.")
 
     # 5. SEPARATE FEATURES AND TARGET
@@ -72,5 +71,6 @@ def main():
     print(f"Final processed data shape: {final_df.shape}")
 
 
+# This is the magic line that allows you to run the script from the command line
 if __name__ == "__main__":
     main()
