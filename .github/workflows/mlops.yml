@@ -2,14 +2,12 @@
 
 name: MLOps Pipeline
 
-permissions:
-  contents: read
-  id-token: write
-  
-
+# 1. TRIGGERS: When to run the pipeline
 on:
   push:
-    branches: [ main ]
+    branches: [ main ] # Run on pushes to the main branch
+  pull_request:
+    branches: [ main ] # Run on pull requests targeting main
 
 # 2. JOBS: The different stages of our assembly line
 jobs:
@@ -62,22 +60,21 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Install DVC (needed to pull data)
+      run: |
+        python -m pip install --upgrade pip
+        pip install 'dvc[s3]'
+
     - name: Configure AWS Credentials
-      if: ${{ secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1 # Or your bucket's region
 
-    - name: Install DVC (for data pull)
-      if: ${{ secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        python -m pip install --upgrade pip
-        pip install 'dvc[s3]'
-
+    # NOTE: removed an unsafe debug step that echoed secrets to logs.
+    # Avoid printing secrets in CI logs; secrets must be configured in repository settings.
     - name: Pull data from DVC remote storage
-      if: ${{ secrets.AWS_ACCESS_KEY_ID && secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         dvc pull # Pulls the latest data from the S3 bucket
 
