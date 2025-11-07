@@ -31,7 +31,7 @@ jobs:
 
     - name: Run tests with pytest
       run: |
-        pytest tests/ -v # Run all tests in the tests/ directory
+        pytest test/ -v # Run all tests in the test/ directory
 
   # Job 2: Train the model
   train:
