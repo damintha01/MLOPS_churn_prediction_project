@@ -63,6 +63,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1 # Or your bucket's region
 
+    - name: Debug - Check for secrets
+      run: |
+        echo "Checking if secrets are available..."
+        echo "AWS_ACCESS_KEY_ID is: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+        echo "AWS_SECRET_ACCESS_KEY is: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+        
+
     - name: Pull data from DVC remote storage
       run: |
         dvc pull # Pulls the latest data from the S3 bucket
