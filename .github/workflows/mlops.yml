@@ -97,6 +97,8 @@ jobs:
   # Job 3: Build and Deploy the Model API to ECR
   # .github/workflows/mlops.yml (in the deploy job)
 
+ # .github/workflows/mlops.yml (replace the ENTIRE deploy job with this)
+
   # Job 3: Build and Deploy the Model API to ECR
   deploy:
     needs: train
@@ -107,7 +109,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # THIS IS THE IMPORTANT STEP THAT FIXES THE ERROR
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -128,7 +129,7 @@ jobs:
         ECR_REPOSITORY: churn-prediction-api
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REPOSITORY ./src/deployment
+        docker build -t $ECR_REPOSITORY . # <-- USE '.' FOR CONTEXT
         docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
