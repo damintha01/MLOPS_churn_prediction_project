@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Step 3: Copy the deployment requirements file into the container
 # Use a lightweight requirements file for faster builds
-COPY src/deployment/requirements-deploy.txt ./requirements.txt
+COPY ../../requirements.txt .
 
 # Step 4: Upgrade pip and install packages with extended timeout
 # Install packages one by one to avoid timeout issues
