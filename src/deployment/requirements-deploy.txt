@@ -1,0 +1,10 @@
+# Deployment-specific requirements (minimal for FastAPI + MLflow model serving)
+# Pin specific versions to avoid resolving large dependency trees
+pandas==2.0.3
+numpy==1.24.4
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+scikit-learn==1.3.2
+mlflow==2.9.2
+
