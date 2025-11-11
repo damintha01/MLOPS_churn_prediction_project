@@ -92,6 +92,8 @@ jobs:
   # Job 3: Build and Deploy the Model API
   # .github/workflows/mlops.yml (replace the existing deploy job)
 
+  # .github/workflows/mlops.yml (in the deploy job)
+
   # Job 3: Build and Deploy the Model API to ECR
   deploy:
     needs: train
@@ -102,12 +104,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # ADD THIS NEW STEP
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1 # Or your region
+        aws-region: us-east-1
 
     - name: Log in to Amazon ECR
       id: login-ecr
